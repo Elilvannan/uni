@@ -1,0 +1,34 @@
+-------------------------check attendance-------------------------------
+----------------------------ict0001----------------------------------------
+
+-------------------------check thery ict0001 withot medical----------------------------
+
+create view view_ict0001_check_att_t as  
+    select St_id, case when (((d1+d2+d3+d4+d5+d6+d7+d8+d9+d10+d11+d12+d13+d14+d14+d15)/15)*100)>80 then 'eligible' 
+    else ('not eligible')end as eligibily_without_medical_ict0001_thery 
+from ict0001_att_t;
+
+----------------------check pratical ict0001 without medical----------------------------
+
+create view view_ict0001_check_att_p as select  St_id, case when (((d1+d2+d3+d4+d5+d6+d7+d8+d9+d10+d11+d12+d13+d14+d14+d15)/15)*100)>80 then 'above 80%'      else ('under 80%')end as eligibily_without_medical_ict0001_pratical  from ict0001_att_p;
+
+
+
+-------------------check ict0001 both combined with out medical--------------------------
+
+select s.st_id,s.fname,case when (((t.d1+t.d2+t.d3+t.d4+t.d5+t.d6+t.d7+t.d8+t.d9+t.d10+t.d11+t.d12+t.d13+t.d14+t.d14+t.d15)/15)*100)>=80 and (((p.d1+p.d2+p.d3+p.d4+p.d5+p.d6+p.d7+p.d8+p.d9+p.d10+p.d11+p.d12+p.d13+p.d14+p.d14,p.d15)/15)*100)>=80 then 'above 80%' else ('not above')end as att_both_t_p from ict0001_att_t t,ict0001_att_p p,student s where s.st_id=p.st_id and s.st_id=t.st_id
+
+--------------------------check thery with medical------------------------------------------
+
+
+ select m.St_id, case when (((t.d1+t.d2+t.d3+t.d4+t.d5+t.d6+t.d7+t.d8+t.d9+t.d10+t.d11+t.d12+t.d13+t.d14+t.d14)/15)*100)+(((m.d1+m.d2+m.d3+m.d4+m.d5+m.d6+m.d7+m.d8+m.d9+m.d10+m.d11+m.d12+m.d13+m.d14+m.d14)/15)*100)> 80 then 'eligible' 
+    else ('not eligible')end as eligibily_with_medical_ict0001_thery 
+from ict0001_att_t t,ict0001_att_t_m m;
+
+
+--------------------------check pratical with medical------------------------------------------
+
+
+ select m.St_id, case when (((p.d1+p.d2+p.d3+p.d4+p.d5+p.d6+p.d7+p.d8+p.d9+p.d10+p.d11+p.d12+p.d13+p.d14+p.d14)/15)*100)+(((m.d1+m.d2+m.d3+m.d4+m.d5+m.d6+m.d7+m.d8+m.d9+m.d10+m.d11+m.d12+m.d13+m.d14+m.d14)/15)*100)> 80 then 'eligible' 
+    else ('not eligible')end as eligibily_without_medical_ict0001_thery 
+from ict0001_att_p p,ict0001_att_p_m m;

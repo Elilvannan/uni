@@ -1,0 +1,11 @@
+----------------------ict0001---------------------------------------
+
+-----------------------this is for view the final CA marks----------
+create view con_fi_ict0001 as  select st_id, case when q1>q2 and q3>q2 then (((q1+q3)/200)*20) when q2>q1 and q3>q1 then (((q2+q3)/200)*20) else (((q1+q2)/200)*10)end + ((m_p+m_t)/200)*20 as CA_mark from ict0001_marks;
+
+----------------------- this is for view the status of CA marks----------
+create view con_status_ict0001 as
+ if case when q1>q2 and q3>q2 then (((q1+q3)/200)*20) when q2>q1 and q3>q1 then (((q2+q3)/200)*20) else (((q1+q2)/200)*10)end + ((m_p+m_t)/200)*20>(20,'pass','fail') as co_pa/fa from ict0001_marks//
+
+
+

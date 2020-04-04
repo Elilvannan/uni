@@ -3,23 +3,123 @@
 create database university;
 
 
+--------------------department table--------------------------------
+
+create table department(dept_id char(3),d_name varchar(50),hod_name varchar(30),primary key(dept_id));
+
+insert into department values('d01','ict','subash');
+
+
+
 --------------------student table--------------------------------------
 
-create table student(st_id char(3),fname varchar(30),lname varchar(30),email varchar(150),status varchar(10),menter varchar(30), primary key (st_id));
+create table student(st_id char(3),fname varchar(30),lname varchar(30),email varchar(150),status varchar(10),menter varchar(30),department char(3), primary key (st_id));
+alter table student add foreign key(department) references department(dept_id);
 
-insert into student values("s01","ajay","aj","ajayajgmail.com","single","ravi");
-insert into student values("s02","priya","p","priyagmail.com","single","ravi");
+insert into student values("s01","ajay","aj","ajayajgmail.com","single","ravi","d01"),("s02","priya","p","priyagmail.com","single","ravi","d01");
+
+
+
+
+---------------------lecturer table-------------------------------------
+
+create table lecturer(lec_id char(3),fname varchar(30),lname varchar(30),email varchar(50),contact_no varchar(12),department char(3),primary key(lec_id));
+alter table lecturer add foreign key(department) references department(dept_id);
+
+
+insert into lecturer values('l01','ravi','priyan','ravipriyan@gmail.com','0751234567','d01');
+
+
+
+
 
 
 
 --------------------subject table --------------------------------------
 
-create table subject (sub_id char(7),sub_name varchar(50),credit char(2),course_id char(3));
+create table subject (sub_id char(7),sub_name varchar(50),credit char(2),dept_id char(3),primary key(sub_id));
+alter table subject add foreign key(dept_id) references department(dept_id);
 
-alter table subject add primary key(sub_id);
+
+insert into subject values('ICT0001','c program','3','d01');
 
 
-insert into subject values('ICT0001','c program','3','ict');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------marks-----------------------------------
+
+--------------------------ict department----------------------------------------
+--------------------marks for ict0001---------------------------------
+create table ict0001_marks (st_id char(3),sub_id char(7),q1 int(3),q2 int(3),q3 int(3),m_p int(3),m_t int(3),primary key(st_id,sub_id));
+alter table ict0001_marks add foreign key(st_id) references student(st_id);
+ alter table ict0001_marks add foreign key(sub_id) references subject(sub_id);
+
+insert into ict0001_marks values("s01","ict0001",51,65,78,70,50);
+insert into ict0001_marks values("s02",'ict0001',70,65,80,50,50);
+insert into ict0001_marks values("s03","ict0001",50,45,30,60,30);
+insert into ict0001_marks values("s04","ict0001",50,45,30,0,30);
+---------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -33,16 +133,40 @@ insert into subject values('ICT0001','c program','3','ict');
 
 -------------------------attendances for ict0001----------------------
 ----------------------------thery-------------------------------------
-create table ict0001_att_t(st_id char(3),d1 int,d2 int,d3 int,d4 int,d5 int,d6 int,d7 int,d8 int,d9 int,d10 int,d11 int,d12 int,d13 int,d14 int,d15 int,primary key(st_id));
+create table ict0001_att_t(st_id char(3),sub_id char(7),d1 int,d2 int,d3 int,d4 int,d5 int,d6 int,d7 int,d8 int,d9 int,d10 int,d11 int,d12 int,d13 int,d14 int,d15 int,primary key(st_id));
 
-insert into ict0001_att_t values("s01",1,1,1,1,1,1,1,1,1,1,1,1,1,1,0);
+insert into ict0001_att_t values("s01",'ict0001',1,1,1,1,1,1,1,1,1,1,1,1,1,1,0);
 
 
 
 ---------------------------pratical-----------------------------------
-create table ict0001_att_p(st_id char(3),d1 int,d2 int,d3 int,d4 int,d5 int,d6 int,d7 int,d8 int,d9 int,d10 int,d11 int,d12 int,d13 int,d14 int,d15 int,primary key(st_id));
+create table ict0001_att_p(st_id char(3),sub_id char(7),d1 int,d2 int,d3 int,d4 int,d5 int,d6 int,d7 int,d8 int,d9 int,d10 int,d11 int,d12 int,d13 int,d14 int,d15 int,primary key(st_id,sub_id));
+alter table ict0001_att_p add foreign key(st_id)references student(st_id);
+alter table ict0001_att_p add foreign key(sub_id)references subject(sub_id);
 
-insert into ict0001_att_p values("s01",1,1,1,1,1,1,1,1,1,1,1,1,1,1,0);
+insert into ict0001_att_p values("s01","ict0001",1,1,1,1,1,1,1,1,1,1,1,1,1,1,0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -55,15 +179,19 @@ insert into ict0001_att_p values("s01",1,1,1,1,1,1,1,1,1,1,1,1,1,1,0);
 
 ---------------------------ict0001------------------------------------
 ----------------------------thery-------------------------------------
-create table ict0001_att_t_m(st_id char(3),d1 int,d2 int,d3 int,d4 int,d5 int,d6 int,d7 int,d8 int,d9 int,d10 int,d11 int,d12 int,d13 int,d14 int,d15 int,primary key(st_id));
+create table ict0001_att_t_m(st_id char(3),sub_id char(7),d1 int,d2 int,d3 int,d4 int,d5 int,d6 int,d7 int,d8 int,d9 int,d10 int,d11 int,d12 int,d13 int,d14 int,d15 int,primary key(st_id,sub_id));
+alter table ict0001_att_t_m add foreign key(st_id)references student(st_id);
+alter table ict0001_att_t_m add foreign key(sub_id)references subject(sub_id);
 
-insert into ict0001_att_t_m values("s01",0,0,0,0,0,0,0,0,0,0,0,0,0,0,1);
+insert into ict0001_att_t_m values("s01","ict0001",0,0,0,0,0,0,0,0,0,0,0,0,0,0,1);
+
 
 -----------------------------pratical-------------------------------------
-create table ict0001_att_p_m(st_id char(3),d1 int,d2 int,d3 int,d4 int,d5 int,d6 int,d7 int,d8 int,d9 int,d10 int,d11 int,d12 int,d13 int,d14 int,d15 int,primary key(st_id));
+create table ict0001_att_p_m(st_id char(3),sub_id char(7),d1 int,d2 int,d3 int,d4 int,d5 int,d6 int,d7 int,d8 int,d9 int,d10 int,d11 int,d12 int,d13 int,d14 int,d15 int,primary key(st_id));
+alter table ict0001_att_p_m add foreign key(st_id)references student(st_id);
+alter table ict0001_att_p_m add foreign key(sub_id)references subject(sub_id);
 
-
-insert into ict0001_att_p_m values("s01",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+insert into ict0001_att_p_m values("s01","ict0001",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 
 
 
@@ -74,29 +202,15 @@ insert into ict0001_att_p_m values("s01",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 ------------------------medical for CA-----------------------------
 --------------------------ict0001----------------------------------
 
-create table ict0001_con_me (st_id char(3),q1 int,q2 int,q3,m_t,m_p,f_t,f_p);
+create table ict0001_con_me (st_id char(3),sub_id char(7),q1 int,q2 int,q3 int,m_t int,m_p int,f_t int,f_p int);
 
-insert into ict0001_con_me values("s01",0,0,0,0,0,0,0);
-
-
+insert into ict0001_con_me values("s01","ict0001",0,0,0,0,0,0,0);
 
 
 
 
----------------------------marks-----------------------------------
-
---------------------------ict department----------------------------------------
---------------------marks for ict0001---------------------------------
-
-create table ict0001_marks (st_id char(3),q1 int(3),q2 int(3),q3 int(3),m_p int(3),m_t int(3),primary key(st_id));
 
 
-
-insert into ict0001_marks values("s01",51,65,78,70,50);
-insert into ict0001_marks values("s02",70,65,80,50,50);
-insert into ict0001_marks values("s03",50,45,30,60,30);
-insert into ict0001_marks values("s04",50,45,30,0,30);
----------------------
 
 
 
